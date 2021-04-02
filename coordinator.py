@@ -8,8 +8,8 @@ import requests
 from settings import GET_DATA_ADDRESS, CLONE_ADDRESS, REMOVE_ADDRESS
 
 
-def timer(minuts=5) -> None:
-    for remaining in range(60*minuts, 0, -1):
+def timer(minutes=5) -> None:
+    for remaining in range(60*minutes, 0, -1):
         sys.stdout.write("\r")
         sys.stdout.write("Time to DEBUG !!! {:2d} seconds remaining.".format(remaining))
         sys.stdout.flush()
@@ -18,7 +18,7 @@ def timer(minuts=5) -> None:
 
 def get() -> None:
     """
-    Print CBU and OS data.
+    Print CPU and OS data.
     """
     r = requests.get(GET_DATA_ADDRESS)
     pprint.pprint(r.json())
