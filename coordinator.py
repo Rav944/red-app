@@ -1,6 +1,7 @@
 import pprint
 import sys
 import time
+from retrying import retry
 
 import argh
 import requests
@@ -8,8 +9,8 @@ import requests
 from settings import GET_DATA_ADDRESS, CLONE_ADDRESS, REMOVE_ADDRESS
 
 
-def timer(minutes=5) -> None:
-    for remaining in range(60*minutes, 0, -1):
+def timer(attempts, delay) -> None:
+    for remaining in range(60*5, 0, -1):
         sys.stdout.write("\r")
         sys.stdout.write("Time to DEBUG !!! {:2d} seconds remaining.".format(remaining))
         sys.stdout.flush()
@@ -25,18 +26,17 @@ def get() -> None:
 
 
 @argh.arg('repo', choices=['node-hello', 'nodejs-sample'])
+@retry(wait_func=timer)
 def clone(repo: str) -> None:
     """
     Clone and build project from given repo.
     """
     payload = {'repo': repo}
-    while True:
-        r = requests.get(CLONE_ADDRESS, params=payload)
-        if r.status_code == 200:
-            break
+    r = requests.get(CLONE_ADDRESS, params=payload)
+    if r.status_code != 200:
         response_message = r.json()
         print(f'{response_message.get("type")}: {response_message.get("message")}', end='\n')
-        timer()
+        raise
     print("Cloning and building was successful")
 
 
