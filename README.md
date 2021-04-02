@@ -1,11 +1,14 @@
 # red-app
 
 python3 -m venv env
+
 pip install -r requirements.txt
+
 
 first console:
   export FLASK_APP=runner
   flask run
+  
   
 second console:
   python coordinator.py -h -> for help
