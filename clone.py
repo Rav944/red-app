@@ -18,7 +18,7 @@ class Clone:
     def clone_repo(self):
         if self.address:
             try:
-                git.Git(f"{'/'.join(dir_file[:-1])}").clone(self.address)
+                git.Git(f"{dir_file}").clone(self.address)
             except git.GitCommandError as e:
                 self.errors = make_error(400, 'Problems with the specified GIT repository', e.stderr)
         else:
@@ -30,7 +30,7 @@ class Clone:
                 action = subprocess.run(
                     f"npm {a}",
                     shell=True,
-                    cwd=self.name,
+                    cwd=f'{dir_file}/{self.name}',
                     capture_output=True,
                     text=True,
                     timeout=60)

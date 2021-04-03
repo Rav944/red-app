@@ -7,4 +7,5 @@ REPOSITORIES = {
     'nodejs-sample': 'https://github.com/wellflat/nodejs-sample.git'
 }
 
-dir_file = __file__.split('/')
+path_elements = __file__.split('/')[:-1]
+dir_file = '/'.join(path_elements)
