@@ -2,8 +2,6 @@ import pprint
 import time
 from json import JSONDecodeError
 
-from retrying import retry
-
 import argh
 import requests
 

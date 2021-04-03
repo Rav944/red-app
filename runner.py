@@ -5,7 +5,7 @@ import psutil
 from flask import Flask, request, jsonify
 
 from clone import Clone
-from settings import REPOSITORIES
+from settings import REPOSITORIES, dir_file
 from utils import make_error
 
 app = Flask(__name__)
@@ -50,9 +50,9 @@ def clone_repo():
 def remove_repo():
     repo = request.args.get('repo')
     if repo and repo in REPOSITORIES:
-        remove = subprocess.run(f"rm -rf {repo}", shell=True, capture_output=True, text=True, timeout=60)
+        remove = subprocess.run(f"rm -rf {dir_file}/{repo}", shell=True, capture_output=True, text=True, timeout=60)
         if remove.returncode != 0:
-            return make_error(500, f'Npm {a} error', remove.stderr)
+            return make_error(500, f'Remove repo error', remove.stderr)
         return jsonify(success=True)
     else:
         return make_error(400, 'Incorrect repo selected ', '')
